@@ -57,17 +57,6 @@ public class DefaultSystemSettings {
     }
 
     public void onBootCompleted() {
-        if (isFirstRun("disable-nav-keys")) {
-            writeDisableNavkeysOption(true);
-        }
-
-        if (isFirstRun("enable-battery-light")) {
-            writeBatteryLightOption(true);
-        }
-
-        if (isFirstRun("enable-dt2w")) {
-            writeDt2wOption(true);
-        }
 
         if (isFirstRun("enable-auto-brightness")) {
             writeAutoBrightnessOption(true);
@@ -90,39 +79,6 @@ public class DefaultSystemSettings {
 
         tweakActivityManagerSettings();
         writeAnimationSettings();
-    }
-
-    private void writeDisableNavkeysOption(final boolean enabled) {
-        final boolean virtualKeysEnabled = Settings.System.getIntForUser(
-                mContext.getContentResolver(), Settings.System.FORCE_SHOW_NAVBAR, 0,
-                UserHandle.USER_CURRENT) != 0;
-        if (enabled != virtualKeysEnabled) {
-            Settings.System.putIntForUser(mContext.getContentResolver(),
-            Settings.System.FORCE_SHOW_NAVBAR, enabled ? 1 : 0,
-                    UserHandle.USER_CURRENT);
-        }
-    }
-
-    private void writeBatteryLightOption(final boolean enabled) {
-        final boolean isBatteryLightEnabled = Settings.System.getIntForUser(
-                mContext.getContentResolver(), Settings.System.BATTERY_LIGHT_ENABLED, 0,
-                UserHandle.USER_CURRENT) != 0;
-        if (enabled != isBatteryLightEnabled) {
-            Settings.System.putIntForUser(mContext.getContentResolver(),
-                    Settings.System.BATTERY_LIGHT_ENABLED, enabled ? 1 : 0,
-                    UserHandle.USER_CURRENT);
-        }
-    }
-
-    private void writeDt2wOption(final boolean enabled) {
-        final boolean isDt2wEnabled = Settings.Secure.getIntForUser(
-                mContext.getContentResolver(), Settings.Secure.DOUBLE_TAP_TO_WAKE, 0,
-                UserHandle.USER_CURRENT) != 0;
-        if (enabled != isDt2wEnabled) {
-            Settings.Secure.putIntForUser(mContext.getContentResolver(),
-                    Settings.Secure.DOUBLE_TAP_TO_WAKE, enabled ? 1 : 0,
-                    UserHandle.USER_CURRENT);
-        }
     }
 
     private void writeAutoBrightnessOption(final boolean enabled) {
