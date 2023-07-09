@@ -48,7 +48,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import lineageos.providers.LineageSettings;
+import android.provider.Settings;
 
 import org.lineageos.settings.PartsUtils;
 import org.lineageos.settings.PhoneStateReceiver;
@@ -247,9 +247,7 @@ public class PocketJudgeService extends Service {
                     // Disable force wake screen with volume keys if the user
                     // doesn't want it
                     if (!mVolBtnMusicControlsEnabled && !mVolumeWakeScreenEnabled) {
-                        LineageSettings.System.putIntForUser(mContext.getContentResolver(),
-                                LineageSettings.System.VOLUME_WAKE_SCREEN, 0,
-                                UserHandle.USER_CURRENT);
+
                     }
                 });
             } else if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
@@ -257,27 +255,22 @@ public class PocketJudgeService extends Service {
                 mLastAction = EVENT_TURN_OFF_SCREEN;
                 disableSensor();
                 submit(() -> {
-                    mVolBtnMusicControlsEnabled = LineageSettings.System.getIntForUser(
+                    mVolBtnMusicControlsEnabled = Settings.System.getIntForUser(
                             mContext.getContentResolver(),
-                            LineageSettings.System.VOLBTN_MUSIC_CONTROLS, 0,
+                            Settings.System.VOLBTN_MUSIC_CONTROLS, 0,
                             UserHandle.USER_CURRENT) != 0;
                     if (mVolBtnMusicControlsEnabled) {
                         return;
                     }
 
-                    mVolumeWakeScreenEnabled = LineageSettings.System.getIntForUser(
-                            mContext.getContentResolver(),
-                            LineageSettings.System.VOLUME_WAKE_SCREEN, 0,
-                            UserHandle.USER_CURRENT) != 0;
+
                     if (mVolumeWakeScreenEnabled) {
                         return;
                     }
 
                     // Force wake screen with volume keys if volume buttons should
                     // not seek media tracks
-                    LineageSettings.System.putIntForUser(mContext.getContentResolver(),
-                            LineageSettings.System.VOLUME_WAKE_SCREEN, 1,
-                            UserHandle.USER_CURRENT);
+
                 });
             } else if (intent.getAction().equals(Intent.ACTION_USER_PRESENT)) {
                 if (DEBUG) Log.d(TAG, "Receiving screen intent: ACTION_USER_PRESENT");
