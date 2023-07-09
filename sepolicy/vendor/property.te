@@ -21,6 +21,3 @@ vendor_internal_prop(vendor_subsys_state_notifier_prop);
 
 # Xiaomi
 vendor_public_prop(vendor_xiaomi_prop)
-
-# Radio
-vendor_restricted_prop(vendor_imsradio_prop)

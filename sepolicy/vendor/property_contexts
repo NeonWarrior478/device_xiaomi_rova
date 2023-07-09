@@ -59,6 +59,3 @@ persist.sys.dynamic.nv         u:object_r:vendor_wifi_prop:s0
 
 # Xiaomi
 ro.vendor.xiaomi.              u:object_r:vendor_xiaomi_prop:s0
-
-# Radio
-persist.ims.regmanager.mode     u:object_r:vendor_imsradio_prop:s0
