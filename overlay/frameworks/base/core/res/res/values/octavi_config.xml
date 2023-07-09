@@ -16,9 +16,8 @@
 -->
 <resources>
     <!-- Pocket Lock -->
-    <bool name="config_pocketModeSupported">true</bool>
-    <bool name="config_pocketUseLightSensor">true</bool>
-    
+    <bool name="config_pocketModeSupported">false</bool>
+
     <!-- Whether device supports sensor based doze customizations -->
     <bool name="config_dozePulsePickup">true</bool>
     <bool name="config_dozePulseTilt">true</bool>
