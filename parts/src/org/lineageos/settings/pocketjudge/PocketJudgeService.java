@@ -255,10 +255,6 @@ public class PocketJudgeService extends Service {
                 mLastAction = EVENT_TURN_OFF_SCREEN;
                 disableSensor();
                 submit(() -> {
-                    mVolBtnMusicControlsEnabled = Settings.System.getIntForUser(
-                            mContext.getContentResolver(),
-                            Settings.System.VOLBTN_MUSIC_CONTROLS, 0,
-                            UserHandle.USER_CURRENT) != 0;
                     if (mVolBtnMusicControlsEnabled) {
                         return;
                     }
