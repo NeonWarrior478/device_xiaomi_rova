@@ -53,9 +53,7 @@ import static android.provider.SearchIndexablesContract.COLUMN_INDEX_NON_INDEXAB
 
 import org.lineageos.settings.dirac.DiracActivity;
 import org.lineageos.settings.speaker.ClearSpeakerActivity;
-import org.lineageos.settings.smartcharging.SmartChargingActivity;
 import org.lineageos.settings.soundcontrol.SoundControlSettingsActivity;
-import org.lineageos.settings.pocketjudge.PocketJudgeActivity;
 import org.lineageos.settings.uibench.JitterTestActivity;
 
 import java.util.HashSet;
@@ -72,12 +70,8 @@ public class PartsSearchIndexablesProvider extends SearchIndexablesProvider {
                     DiracActivity.class.getName(), iconResId));
         sResMap.add(new SearchIndexableResource(rank, R.xml.clear_speaker_settings,
                     ClearSpeakerActivity.class.getName(), iconResId));
-        sResMap.add(new SearchIndexableResource(rank, R.xml.smartcharging_settings,
-                    SmartChargingActivity.class.getName(), iconResId));
         sResMap.add(new SearchIndexableResource(rank, R.xml.soundcontrol_settings,
                     SoundControlSettingsActivity.class.getName(), iconResId));
-        sResMap.add(new SearchIndexableResource(rank, R.xml.pocketjudge_settings,
-                    PocketJudgeActivity.class.getName(), iconResId));
     }
 
     @Override
