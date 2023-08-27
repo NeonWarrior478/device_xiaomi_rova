@@ -197,7 +197,7 @@ public class DefaultSystemSettings {
         if (canSetAnimationValues) {
             for (String animationSetting : toggleAnimationTargets) {
                 Settings.Global.putString(mContext.getContentResolver(),
-                        animationSetting, "0.7");
+                        animationSetting, "1.0");
             }
         }
     }
