@@ -29,7 +29,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Icon;
 import android.os.IBinder;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -338,8 +337,9 @@ public class SmartChargingService extends Service {
         PendingIntent pIntent = PendingIntent.getService(ctx, 0, intent,
                 PendingIntent.FLAG_IMMUTABLE |
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        notificationBuilder.addAction(new Notification.Action.Builder(Icon.createWithResource("", 0),
-                ctx.getString(R.string.not_now), pIntent).build());
+        notificationBuilder.addAction(0,
+                ctx.getString(R.string.not_now),
+                pIntent);
         notificationBuilder.setContentIntent(pAIntent);
         notificationBuilder.setDeleteIntent(pDIntent);
 

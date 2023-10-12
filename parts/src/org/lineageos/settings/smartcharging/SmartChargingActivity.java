@@ -29,10 +29,7 @@ public class SmartChargingActivity extends CollapsingToolbarBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.content_frame,
-                    new SmartChargingFragment(), TAG).commit();
-        }
+        getFragmentManager().beginTransaction().replace(R.id.content_frame,
+                new SmartChargingFragment(), TAG).commit();
     }
 }

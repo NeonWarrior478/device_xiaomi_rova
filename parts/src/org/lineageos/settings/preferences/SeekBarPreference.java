@@ -70,24 +70,13 @@ public class SeekBarPreference extends Preference
         a.recycle();
 
         a = context.obtainStyledAttributes(attrs,
-                com.android.internal.R.styleable.ProgressBar, defStyleAttr,
+                com.android.internal.R.styleable.Preference, defStyleAttr,
                 defStyleRes);
         mMaxValue = a.getInt(com.android.internal.R.styleable.ProgressBar_max, mMaxValue);
         mMinValue = a.getInt(com.android.internal.R.styleable.ProgressBar_min, mMinValue);
         if (mMaxValue < mMinValue)
             mMaxValue = mMinValue;
-        a.recycle();
-
-        a = context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference,
-                defStyleAttr, defStyleRes);
-
-        final int defaultValueId;
-        if (a.hasValue(androidx.preference.R.styleable.Preference_defaultValue)) {
-            defaultValueId = androidx.preference.R.styleable.Preference_defaultValue;
-        } else {
-            defaultValueId = androidx.preference.R.styleable.Preference_android_defaultValue;
-        }
-        mDefaultValue = a.getInt(defaultValueId, mMinValue);
+        mDefaultValue = a.getInt(com.android.internal.R.styleable.Preference_defaultValue, mMinValue);
         mDefaultValue = mValue = getLimitedValue(mDefaultValue);
         a.recycle();
 
@@ -212,9 +201,12 @@ public class SeekBarPreference extends Preference
         return true;
     }
 
+    // Don't need too much shit about initial and default values
+    // its all done in constructor already
     @Override
-    protected void onSetInitialValue(Object defaultValue) {
-        setValue(getPersistedInt(mDefaultValue));
+    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+        if (restoreValue)
+            mValue = getPersistedInt(mValue);
     }
 
     public void setDefaultValue(int newValue, boolean update) {

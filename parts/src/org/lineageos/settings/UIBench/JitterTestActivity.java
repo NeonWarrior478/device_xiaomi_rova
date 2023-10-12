@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.FrameMetrics;
@@ -44,7 +43,7 @@ public class JitterTestActivity extends Activity {
         sMetricsHandler = new Handler(thread.getLooper());
     }
 
-    private Handler mUpdateHandler = new Handler(Looper.myLooper()) {
+    private Handler mUpdateHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -332,7 +331,6 @@ public class JitterTestActivity extends Activity {
         }
 
         @Override
-        @SuppressWarnings("deprecation")
         public int getOpacity() {
             return PixelFormat.OPAQUE;
         }

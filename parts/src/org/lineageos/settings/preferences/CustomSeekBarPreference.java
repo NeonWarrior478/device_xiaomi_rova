@@ -36,6 +36,8 @@ import org.lineageos.settings.R;
 public class CustomSeekBarPreference extends Preference implements SeekBar.OnSeekBarChangeListener,
         View.OnClickListener, View.OnLongClickListener {
     protected final String TAG = getClass().getName();
+    private static final String APP_NS = "http://schemas.android.com/apk/res-auto";
+    protected static final String ANDROIDNS = "http://schemas.android.com/apk/res/android";
 
     protected int mInterval = 1;
     protected boolean mShowSign = false;
@@ -61,39 +63,36 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
     public CustomSeekBarPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SeekBarPreference);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomSeekBarPreference);
         try {
-            mShowSign = a.getBoolean(R.styleable.SeekBarPreference_showSign, mShowSign);
-            String units = a.getString(R.styleable.SeekBarPreference_units);
+            mShowSign = a.getBoolean(R.styleable.CustomSeekBarPreference_showSign, mShowSign);
+            String units = a.getString(R.styleable.CustomSeekBarPreference_units);
             if (units != null)
                 mUnits = " " + units;
-            mContinuousUpdates = a.getBoolean(R.styleable.SeekBarPreference_continuousUpdates, mContinuousUpdates);
-            mInterval = a.getInt(R.styleable.SeekBarPreference_interval, mInterval);
+            mContinuousUpdates = a.getBoolean(R.styleable.CustomSeekBarPreference_continuousUpdates, mContinuousUpdates);
         } finally {
             a.recycle();
         }
 
-        a = context.obtainStyledAttributes(attrs, com.android.internal.R.styleable.ProgressBar,
-                defStyleAttr, defStyleRes);
-        mMaxValue = a.getInt(com.android.internal.R.styleable.ProgressBar_max, mMaxValue);
-        mMinValue = a.getInt(com.android.internal.R.styleable.ProgressBar_min, mMinValue);
+        try {
+            String newInterval = attrs.getAttributeValue(APP_NS, "interval");
+            if (newInterval != null)
+                mInterval = Integer.parseInt(newInterval);
+        } catch (Exception e) {
+            Log.e(TAG, "Invalid interval value", e);
+        }
+        mMinValue = attrs.getAttributeIntValue(APP_NS, "min", mMinValue);
+        mMaxValue = attrs.getAttributeIntValue(ANDROIDNS, "max", mMaxValue);
         if (mMaxValue < mMinValue)
             mMaxValue = mMinValue;
-        a.recycle();
-
-        a = context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.Preference,
-                defStyleAttr, defStyleRes);
-
-        final int defaultValueId;
-        if (a.hasValue(androidx.preference.R.styleable.Preference_defaultValue)) {
-            defaultValueId = androidx.preference.R.styleable.Preference_defaultValue;
+        String defaultValue = attrs.getAttributeValue(ANDROIDNS, "defaultValue");
+        mDefaultValueExists = defaultValue != null && !defaultValue.isEmpty();
+        if (mDefaultValueExists) {
+            mDefaultValue = getLimitedValue(Integer.parseInt(defaultValue));
+            mValue = mDefaultValue;
         } else {
-            defaultValueId = androidx.preference.R.styleable.Preference_android_defaultValue;
+            mValue = mMinValue;
         }
-        mDefaultValueExists = a.hasValue(defaultValueId);
-        mDefaultValue = a.getInt(defaultValueId, mMinValue);
-        mDefaultValue = mValue = getLimitedValue(mDefaultValue);
-        a.recycle();
 
         mSeekBar = new SeekBar(context, attrs);
         setLayoutResource(R.layout.preference_custom_seekbar);
@@ -128,7 +127,7 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
                 }
                 // remove the existing seekbar (there may not be one) and add ours
                 newContainer.removeAllViews();
-                newContainer.addView(mSeekBar, ViewGroup.LayoutParams.MATCH_PARENT,
+                newContainer.addView(mSeekBar, ViewGroup.LayoutParams.FILL_PARENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
             }
         } catch (Exception ex) {
@@ -269,9 +268,13 @@ public class CustomSeekBarPreference extends Preference implements SeekBar.OnSee
         return true;
     }
 
+    // dont need too much shit about initial and default values
+    // its all done in constructor already
+
     @Override
-    protected void onSetInitialValue(Object defaultValue) {
-        setValue(getPersistedInt(mDefaultValue));
+    protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
+        if (restoreValue)
+            mValue = getPersistedInt(mValue);
     }
 
     @Override

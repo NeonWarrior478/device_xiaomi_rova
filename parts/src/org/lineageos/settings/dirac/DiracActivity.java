@@ -29,9 +29,7 @@ public class DiracActivity extends CollapsingToolbarBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.content_frame,
-                    new DiracSettingsFragment(), TAG_DIRAC).commit();
-        }
+        getFragmentManager().beginTransaction().replace(R.id.content_frame,
+                new DiracSettingsFragment(), TAG_DIRAC).commit();
     }
 }
