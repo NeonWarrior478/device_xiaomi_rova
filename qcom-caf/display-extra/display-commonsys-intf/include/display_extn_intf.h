@@ -27,6 +27,13 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * Changes from Qualcomm Innovation Center are provided under the following license:
+ *
+ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
 #ifndef __DISP_EXTN_INTF_H__
 #define __DISP_EXTN_INTF_H__
 
@@ -50,6 +57,7 @@ struct LayerFlags {
   bool secure_video = false;
   bool secure_ui = false;
   bool compatible = false;
+  bool blur = false;
 };
 
 struct FBTLayerInfo {
@@ -58,12 +66,14 @@ struct FBTLayerInfo {
   int32_t dataspace = 0;
   int32_t max_buffer_count = 3;
   bool secure = false;
+  int32_t format = 0;
 
   bool operator != (FBTLayerInfo  &f) {
     return (width != f.width ||
             height != f.height ||
             dataspace != f.dataspace ||
-            secure != f.secure);
+            secure != f.secure ||
+            format != f.format);
   }
 };
 

@@ -1,6 +1,8 @@
 /*
  * Copyright (c) 2020 The Linux Foundation. All rights reserved.
  *
+ * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
@@ -76,9 +78,6 @@
 
 #include "QtiGrallocMetadata.h"
 
-#ifndef __QTI_DISPLAY_GRALLOC__
-//#pragma message "QtiGrallocPriv.h should not be included"
-#endif
 
 /*
  *
@@ -123,7 +122,7 @@ struct MetaData_t {
   /* Populated and used by adreno during buffer size calculation.
    * Set only for RGB formats. */
   GraphicsMetadata graphics_metadata;
-  /* Video hisogram stats populated by video decoder */
+  /* Video histogram stats populated by video decoder */
   struct VideoHistogramMetadata video_histogram_stats;
   /*
    * Producer (camera) will set cvp metadata and consumer (video) will
@@ -138,6 +137,15 @@ struct MetaData_t {
   bool isVendorMetadataSet[METADATA_SET_SIZE];
   uint64_t reservedSize;
   VideoTimestampInfo videoTsInfo;
+  BufferPermission bufferPerm[BUFFER_CLIENT_MAX];
+  int64_t memHandle;
+
+  /* Set by clients to indicate that timed rendering will be enabled
+   * or disabled for this buffer. */
+  uint32_t timedRendering;
+  /* Video transcode stat populated by video decoder */
+  struct VideoTranscodeStatsMetadata video_transcode_stats;
+  int32_t videoEarlyNotifyLineCount;
 };
 
 namespace qtigralloc {
@@ -171,6 +179,9 @@ struct private_handle_t : public native_handle_t {
 #ifdef GRALLOC_HANDLE_HAS_RESERVED_SIZE
   unsigned int reserved_size;
 #endif
+#ifdef GRALLOC_HANDLE_HAS_CUSTOM_CONTENT_MD_RESERVED_SIZE
+  unsigned int custom_content_md_reserved_size;
+#endif
   static const int kNumFds = 2;
   static const int kMagic = 'gmsm';
 
@@ -201,6 +212,9 @@ struct private_handle_t : public native_handle_t {
         gpuaddr(0)
 #ifdef GRALLOC_HANDLE_HAS_RESERVED_SIZE
         ,reserved_size(0)
+#endif
+#ifdef GRALLOC_HANDLE_HAS_CUSTOM_CONTENT_MD_RESERVED_SIZE
+        ,custom_content_md_reserved_size(0)
 #endif
   {
     version = static_cast<int>(sizeof(native_handle));
