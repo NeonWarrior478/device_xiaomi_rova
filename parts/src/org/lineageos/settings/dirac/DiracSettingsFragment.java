@@ -79,11 +79,9 @@ public class DiracSettingsFragment extends PreferenceFragmentCompat implements
             switch (preference.getKey()) {
                 case PREF_HEADSET:
                     mDiracUtils.setHeadsetType(Integer.parseInt(newValue.toString()));
-                    DiracTileService.sync(getActivity());
                     return true;
                 case PREF_PRESET:
                     mDiracUtils.setLevel(String.valueOf(newValue));
-                    DiracTileService.sync(getActivity());
                     return true;
                 default:
                     return false;
@@ -104,7 +102,6 @@ public class DiracSettingsFragment extends PreferenceFragmentCompat implements
 
         try {
             mDiracUtils.setEnabled(isChecked);
-            DiracTileService.sync(getActivity());
         } catch (RuntimeException e) {
             e.printStackTrace();
             getActivity().recreate();
@@ -132,6 +129,5 @@ public class DiracSettingsFragment extends PreferenceFragmentCompat implements
         mSwitchBar.setChecked(enabled);
         mHeadsetType.setEnabled(enabled);
         mPreset.setEnabled(enabled);
-        DiracTileService.sync(getActivity());
     }
 }

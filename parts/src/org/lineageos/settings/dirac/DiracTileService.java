@@ -16,8 +16,6 @@
 
 package org.lineageos.settings.dirac;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.res.Resources;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
@@ -77,9 +75,5 @@ public class DiracTileService extends TileService {
         }
         tile.updateTile();
         super.onClick();
-    }
-
-    public static void sync(final Context ctx) {
-        TileService.requestListeningState(ctx, new ComponentName(ctx, DiracTileService.class));
     }
 }
