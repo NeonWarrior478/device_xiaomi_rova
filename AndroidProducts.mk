@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/spark_rova.mk
+    $(LOCAL_DIR)/arrow_rova.mk
 
 COMMON_LUNCH_CHOICES := \
-    spark_rova-user \
-    spark_rova-userdebug \
-    spark_rova-eng
+    arrow_rova-user \
+    arrow_rova-userdebug \
+    arrow_rova-eng
