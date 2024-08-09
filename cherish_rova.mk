@@ -20,7 +20,7 @@ TARGET_FACE_UNLOCK_SUPPORTED := true
 TARGET_SUPPORTS_CALL_RECORDING := true
 CHERISH_VANILLA := true
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.cherish.maintainer= @maxx459
+    ro.cherish.maintainer= Raunak.Singh
 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := rova
